@@ -52,7 +52,8 @@ def D(U, t, a, theta):
     return np.array([v, D2x(x, v, a, theta)])
 
 
-x0 = 0.3
+# x0 = 0.3
+x0 = Xfixpoints[1]
 T = np.linspace(0, 10, 1000)
 R = odeint(D, [x0, 0], T, args=(a, theta))
 X = R[:, 0]
@@ -64,4 +65,20 @@ plt.axvline(color='black')
 plt.xlabel('t')
 plt.ylabel('x')
 plt.title(f'rjesenje za x0={x0}, a={a/L0}*L0, theta={theta:.2}')
+plt.show()
+
+# fazni portret
+plt.figure()
+MX, MV = np.meshgrid(np.linspace(-0.5, 0.5, 20), np.linspace(-3, 3, 20))
+
+Xt = MV
+Vt = D2x(MX, MV, a, theta)
+plt.quiver(MX, MV, Xt, Vt, alpha=0.5, angles='xy', scale_units='xy')
+plt.plot(X, V)
+plt.plot(Xfixpoints, np.zeros_like(Xfixpoints), 'ro')
+plt.axhline(color='black')
+plt.axvline(color='black')
+plt.xlabel('x')
+plt.ylabel('v')
+
 plt.show()
