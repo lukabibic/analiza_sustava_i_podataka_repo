@@ -52,8 +52,8 @@ def D(U, t, a, theta):
     return np.array([v, D2x(x, v, a, theta)])
 
 
-# x0 = 0.3
-x0 = Xfixpoints[1]
+x0 = 0.7
+# x0 = Xfixpoints[1]
 T = np.linspace(0, 10, 1000)
 R = odeint(D, [x0, 0], T, args=(a, theta))
 X = R[:, 0]
@@ -81,4 +81,38 @@ plt.axvline(color='black')
 plt.xlabel('x')
 plt.ylabel('v')
 
+plt.show()
+
+# dijagram atraktora s obzirom na pocetnu tocku
+X0 = np.linspace(-1, 1, 100)
+A = np.empty_like(X0)
+
+for i in range(np.size(X0)):
+    R = odeint(D, [X0[i], 0], T, args=(a, theta))
+    A[i] = R[-1, 0]
+
+plt.figure()
+plt.plot(X0, A)
+plt.axhline(color='black')
+plt.axvline(color='black')
+plt.xlabel('x0')
+plt.ylabel('x*')
+plt.title(f'Atraktori')
+plt.show()
+
+# dijagram atraktora s obzirom na theta
+x0 = -0.3
+THETA = np.linspace(0, np.pi/2, 50)
+A = np.empty_like(THETA)
+for i in range(np.size(THETA)):
+    R = odeint(D, [x0, 0], T, args=(a, THETA[i]))
+    A[i] = R[-1, 0]
+
+plt.figure()
+plt.plot(THETA, A)
+plt.axhline(color='black')
+plt.axvline(color='black')
+plt.xlabel('theta')
+plt.ylabel('A')
+plt.title(f'Atraktori za theta,')
 plt.show()
